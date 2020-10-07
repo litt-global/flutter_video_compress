@@ -1,15 +1,9 @@
-//
-//  Utility.swift
-//  flutter_video_compress
-//
-//  Created by ryu on 2019/6/21.
-//
 
 class Utility: NSObject {
     static let fileManager = FileManager.default
     
     static func basePath()->String {
-        let path = "\(NSTemporaryDirectory())flutter_video_compress"
+        let path = "\(NSTemporaryDirectory())video_compress"
         do {
             if !fileManager.fileExists(atPath: path) {
                 try! fileManager.createDirectory(atPath: path,

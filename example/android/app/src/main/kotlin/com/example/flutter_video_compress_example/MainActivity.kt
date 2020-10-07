@@ -1,4 +1,4 @@
-package com.example.flutter_video_compress_example
+package com.example.video_compress_example
 
 import android.os.Bundle
 

@@ -1,5 +1,5 @@
-name: flutter_video_compress_example
-description: Demonstrates how to use the flutter_video_compress plugin.
+name: video_compress_example
+description: Demonstrates how to use the video_compress plugin.
 publish_to: 'none'
 
 environment:
@@ -19,7 +19,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_video_compress:
+  video_compress:
     path: ../
 
 # For information on the generic Dart part of this file, see the

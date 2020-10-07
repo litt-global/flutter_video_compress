@@ -1,9 +1,3 @@
-//
-//  AvController.swift
-//  flutter_video_compress
-//
-//  Created by ryu on 2019/6/21.
-//
 
 import AVFoundation
 import MobileCoreServices
@@ -14,19 +8,7 @@ class AvController: NSObject {
     }
     
     public func getTrack(_ asset: AVURLAsset)->AVAssetTrack? {
-        var track : AVAssetTrack? = nil
-        let group = DispatchGroup()
-        group.enter()
-        asset.loadValuesAsynchronously(forKeys: ["tracks"], completionHandler: {
-            var error: NSError? = nil;
-            let status = asset.statusOfValue(forKey: "tracks", error: &error)
-            if (status == .loaded) {
-                track = asset.tracks(withMediaType: AVMediaType.video).first
-            }
-            group.leave()
-        })
-        group.wait()
-        return track
+        return asset.tracks(withMediaType: AVMediaType.video).first!
     }
     
     public func getVideoOrientation(_ path:String)-> Int? {
