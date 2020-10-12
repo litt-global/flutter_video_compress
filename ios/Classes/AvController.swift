@@ -8,7 +8,7 @@ class AvController: NSObject {
     }
     
     public func getTrack(_ asset: AVURLAsset)->AVAssetTrack? {
-        return asset.tracks(withMediaType: AVMediaType.video).first!
+        return asset.tracks(withMediaType: AVMediaType.video).first
     }
     
     public func getVideoOrientation(_ path:String)-> Int? {
