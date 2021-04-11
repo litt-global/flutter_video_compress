@@ -173,6 +173,11 @@ public class SwiftVideoCompressPlugin: NSObject, FlutterPlugin {
         let sourceVideoAsset = avController.getVideoAsset(sourceVideoUrl)
         let sourceVideoTrack = avController.getTrack(sourceVideoAsset)
         
+        if (sourceVideoTrack == nil) {
+            result(Utility.keyValueToJson(["path": ""] as [String : Any?]))
+            return
+        }
+        
         let compressionUrl =
             Utility.getPathUrl("\(Utility.basePath())/\(Utility.getFileName(path)).\(sourceVideoType)")
         
@@ -199,7 +204,28 @@ public class SwiftVideoCompressPlugin: NSObject, FlutterPlugin {
         
         if frameRate != nil {
             let videoComposition = AVMutableVideoComposition(propertiesOf: sourceVideoAsset)
+            
             videoComposition.frameDuration = CMTimeMake(value: 1, timescale: Int32(frameRate!))
+            
+            var transform = sourceVideoTrack!.preferredTransform;
+            let rotationDegrees = round(atan2(transform.b, transform.a) * 180 / .pi)
+            
+            if (rotationDegrees == 90 || rotationDegrees == 270) {
+                videoComposition.renderSize = CGSize(width: sourceVideoTrack!.naturalSize.height, height: sourceVideoTrack!.naturalSize.width)
+                transform.tx = sourceVideoTrack!.naturalSize.height
+            } else {
+                videoComposition.renderSize = CGSize(width: sourceVideoTrack!.naturalSize.width, height: sourceVideoTrack!.naturalSize.height)
+            }
+            
+            let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: sourceVideoTrack!)
+            let instruction = AVMutableVideoCompositionInstruction()
+            
+            instruction.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: sourceVideoAsset.duration);
+            instruction.layerInstructions = [layerInstruction];
+            layerInstruction.setTransform(transform, at: CMTime.zero);
+            
+            videoComposition.instructions = [instruction];
+            
             exporter.videoComposition = videoComposition
         }
         
