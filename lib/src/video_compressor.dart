@@ -9,11 +9,11 @@ import 'package:flutter/services.dart';
 import 'media_info.dart';
 
 class VideoCompress {
-  static VideoCompress _instance;
+  static VideoCompress? _instance;
 
   factory VideoCompress() {
     if (_instance == null) _instance = VideoCompress._();
-    return _instance;
+    return _instance!;
   }
 
   VideoCompress._() {
@@ -39,8 +39,8 @@ class VideoCompress {
   /// Subscribe the compress progress
   static ObservableBuilder<double> compressProgress$ = ObservableBuilder<double>();
 
-  static Future<T> _invoke<T>(String name, [Map<String, dynamic> params]) async {
-    T result;
+  static Future<T> _invoke<T>(String name, [Map<String, dynamic>? params]) async {
+    late T result;
     try {
       result = params != null ? await _channel.invokeMethod(name, params) : await _channel.invokeMethod(name);
     } on PlatformException catch (e) {
@@ -126,9 +126,9 @@ class VideoCompress {
     String path, {
     VideoQuality quality = VideoQuality.DefaultQuality,
     bool deleteOrigin = false,
-    int startTime,
-    int duration,
-    bool includeAudio,
+    int? startTime,
+    int? duration,
+    bool? includeAudio,
     int frameRate = 30,
   }) async {
     assert(path != null);
@@ -177,7 +177,7 @@ class ObservableBuilder<T> {
     _observable.add(value);
   }
 
-  Subscription subscribe(void onData(T event), {Function onError, void onDone(), bool cancelOnError}) {
+  Subscription subscribe(void onData(T event), {Function? onError, Function()? onDone, bool? cancelOnError}) {
     notSubscribed = false;
     _observable.stream.listen(onData, onError: onError, onDone: onDone, cancelOnError: cancelOnError);
     return Subscription(_observable.close);
