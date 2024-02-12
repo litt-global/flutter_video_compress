@@ -129,7 +129,7 @@ class VideoCompressPlugin private constructor(private val activity: Activity, pr
         @JvmStatic
         fun registerWith(registrar: Registrar) {
             val channel = MethodChannel(registrar.messenger(), "video_compress")
-            val instance = VideoCompressPlugin(registrar.activity(), registrar.context(), channel)
+            val instance = VideoCompressPlugin(registrar.activity()!!, registrar.context(), channel)
             channel.setMethodCallHandler(instance)
         }
     }
